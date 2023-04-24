@@ -1,4 +1,4 @@
-cd C:\Users\Cristiano\Desktop\ProgettoPA\Haskell
+cd Haskell
 
 runhaskell Prova.hs
 
