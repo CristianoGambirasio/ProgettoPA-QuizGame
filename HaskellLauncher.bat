@@ -1,5 +1,5 @@
 cd Haskell
 
-runhaskell Prova.hs
+runhaskell QuizWriter.hs
 
 pause

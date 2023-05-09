@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-import consoleCleaner.ConsoleCleaner;
 import gameReport.ReportSP;
-import letturaFile.ConfigReader;
-import letturaFile.QuestionReader;
+import utils.ConfigReader;
+import utils.ConsoleCleaner;
+import utils.QuestionReader;
 
 public class SinglePlayer extends Partita{
 	public SinglePlayer(String path) {
-		this.roundPath = path;
+		this.quizPath = path;
 		ConfigReader cr = new ConfigReader(path + "\\config.txt");
 		this.nDomande = cr.getNDomande();
 	}
 	
 	@Override
 	public ReportSP start(Scanner in) {
-		QuestionReader qr = new QuestionReader(roundPath);
+		QuestionReader qr = new QuestionReader(quizPath);
 		
 		String[] reportStrings = new String[nDomande];
 		String rispGiusta;

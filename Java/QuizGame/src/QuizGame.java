@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import consoleCleaner.ConsoleCleaner;
 import gameReport.Report;
 import partite.MultiPlayer;
 import partite.Partita;
 import partite.SinglePlayer;
+import utils.ConsoleCleaner;
 
 public class QuizGame {
 	public static String IDE_PATH = "..\\..\\Quiz\\";
@@ -34,25 +34,13 @@ public class QuizGame {
 			quizDirPath = IDE_PATH;
 		}
 		
-		do {			
-			do {
-				System.out.println("Seleziona una modalita':"
-						+ "\n1)Partita Singleplayer"
-						+ "\n2)Partita Multiplayer"
-						+ "\n0)Esci dal gioco");
-				System.out.print("Inserisci una risposta valida (1-2-0)");
-				while(!in.hasNextInt()){
-					ConsoleCleaner.clear();
-					System.out.println("Seleziona una modalita':"
-							+ "\n1)Partita Singleplayer"
-							+ "\n2)Partita Multiplayer"
-							+ "\n0)Esci dal gioco");
-					System.out.print("Inserisci una risposta valida (1-2-0)");
-					in.next();
-				}
-				scelta = in.nextInt();
-				ConsoleCleaner.clear();
-			}while(scelta<0 || scelta>2);
+		do {
+			scelta = safeInput("Seleziona una modalita':"
+					+ "\n1)Partita Singleplayer"
+					+ "\n2)Partita Multiplayer"
+					+ "\n0)Esci dal gioco"
+					+ "\nInserisci una risposta valida (1-2-0): ",
+					0, 2, in);
 			
 			ArrayList<String> quizList = new ArrayList<>();
 			
@@ -71,51 +59,68 @@ public class QuizGame {
 			
 			in.nextLine();
 			
-			if(scelta!=0) {
-				do {
-					System.out.println("Inserisci il nome del quiz che si vuole fare:"
-							+ "\nQuiz disponibili: ");
-					
-					quizList.forEach(q ->{
-						q=q.substring(quizDirPath.length());
-						System.out.println(q);
-					});
-					String selectedQuiz = in.nextLine();
-					quiz = quizDirPath + selectedQuiz;
-					ConsoleCleaner.clear();
-				}while(quiz == null || !quizList.contains(quiz));
+			if(scelta == 0) {
+				break;
 			}
 			
+			quiz = safeInput("Inserisci il nome del quiz che si vuole fare:"
+					+ "\nQuiz disponibili: ", quizList, quizDirPath, in);
+				
 			if(scelta==1) {
 				partita = new SinglePlayer(quiz);
 			}
 			else if(scelta == 2) {
-				int players;
-				do {
-					System.out.print("Inserisci il numero di giocatori (max 4): ");
-					while(!in.hasNextInt()) {
-						ConsoleCleaner.clear();
-						System.out.println("Inserisci il numero di giocatori (max 4): ");
-						in.next();
-					}
-					players = in.nextInt();
-					ConsoleCleaner.clear();
-				}while(players<0 || players>4);
+				int players=safeInput("Inserisci il numero di giocatori (max 4): "
+						, 1, 4, in);
 				partita = new MultiPlayer(quiz, 
 						players);
 			}
 			
-			if(scelta != 0) {
-				risultato = partita.start(in);
-				risultato.print();
-				System.out.println("Premi invio per concludere la partita");
-				in.nextLine();
-				in.nextLine();
-				ConsoleCleaner.clear();
-			}
+			risultato = partita.start(in);
+			risultato.print();
+			
+			System.out.println("Premi invio per concludere la partita");
+			in.nextLine();
+			in.nextLine();
+			ConsoleCleaner.clear();
 			
 			
 		}while(scelta!=0);
 		in.close();
 	}
+
+	private static String safeInput(String out, ArrayList<String> choices, String prefix, Scanner in) {
+		String res;
+		do {
+			System.out.println(out);
+			
+			choices.forEach(e ->{
+				e=e.substring(prefix.length());
+				System.out.println(e);
+			});
+			
+			String choice = in.nextLine();
+			res = prefix + choice;
+			ConsoleCleaner.clear();
+		}while(res==null || !choices.contains(res));
+		return res;
+	}
+
+	private static int safeInput(String out, int min, int max, Scanner in) {
+		int res;
+		do {
+			System.out.println(out);
+			while(!in.hasNextInt()) {
+				ConsoleCleaner.clear();
+				System.out.println(out);
+				in.next();
+			}
+			res = in.nextInt();
+			ConsoleCleaner.clear();
+		}while(res<min || res>max);
+		
+		return res;
+	}
+	
+	
 }

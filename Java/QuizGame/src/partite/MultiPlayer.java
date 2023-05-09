@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-import consoleCleaner.ConsoleCleaner;
 import gameReport.Report;
 import gameReport.ReportMP;
-import letturaFile.ConfigReader;
-import letturaFile.QuestionReader;
+import utils.ConfigReader;
+import utils.ConsoleCleaner;
+import utils.QuestionReader;
 
 public class MultiPlayer extends Partita {
 	int nPlayers;
 	
 	public MultiPlayer(String path, int nPlayers) {
-		this.roundPath = path;
+		this.quizPath = path;
 		ConfigReader cr = new ConfigReader(path + "\\config.txt");
 		this.nDomande = cr.getNDomande();
 		this.nPlayers = nPlayers;
@@ -22,7 +22,7 @@ public class MultiPlayer extends Partita {
 
 	@Override
 	public Report start(Scanner in) {
-		QuestionReader qr = new QuestionReader(roundPath);
+		QuestionReader qr = new QuestionReader(quizPath);
 		
 		ArrayList<String[]> reportStrings = new ArrayList<>(); 
 		String rispGiusta;
