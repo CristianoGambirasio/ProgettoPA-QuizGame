@@ -1,5 +1,6 @@
 package gameReport;
 
+//Report di una partita singleplayer, si basa su un record
 public class ReportSP extends Report{
 
 	ReportRecord playerRecord;

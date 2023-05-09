@@ -10,21 +10,25 @@
 #include "partite/SinglePlayerTimer.h"
 using namespace std;
 
+//Directory base dei quiz
 const char* QuizDir = "../../Quiz/";
 
+//Ritorna la lista di quiz disponibili
 list<string> getQuizList();
 
+//Permettono l'inserimento di valori in modo controllato
 int safeInput(string out,int min, int max);
 string safeInput(string out, list<string> choices);
 
 int main() {
-	system("CLS");
-	int scelta=-1;
-	int nGiocatori;
-	int seconds;
-	string quiz;
 
-	unique_ptr<SinglePlayer> partita;
+	system("CLS");
+	int scelta=-1; //Comanda il flusso del programma
+	int nGiocatori; //Per partita Multiplayer
+	int seconds; //Per partita Timer
+	string quiz;// Path del quiz
+
+	unique_ptr<SinglePlayer> partita; //Oggetto partita
 
 	while(true){
 		scelta = safeInput("Seleziona una modalita':"
@@ -33,11 +37,13 @@ int main() {
 				"\n3)Partita Singleplayer a tempo"
 				"\n4)Esci dal gioco\n",0,4);
 
-		if(scelta==4)
+		if(scelta==4)//Esci dall'applicazione
 			break;
 
+		//Inserimento del path del quiz che si vuole fare
 		quiz = QuizDir+safeInput("Inserisci il quiz che si vuole fare: \n",getQuizList());
 
+		//Avvio del tipo giusto di partita
 		switch(scelta){
 		case 1:
 			partita= unique_ptr<SinglePlayer>(new SinglePlayer(quiz));
@@ -63,6 +69,7 @@ int main() {
 	return 0;
 }
 
+//Implementazione metodi definiti all'inizio
 int safeInput(string out, int min, int max){
 	int res;
 	cout<<out;

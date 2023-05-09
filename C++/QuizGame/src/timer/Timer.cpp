@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 
-std::thread thread;
+std::thread thread; //thread in cui si esegue il timer
 
 Timer::Timer(int t) {
 
@@ -15,16 +15,19 @@ Timer::Timer(int t) {
 void Timer::run(){
 	this->stop = false;
 	thread = std::thread([&]{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));//Make sure to print question before
+		//Si assicura che il timer sia stampato come ultima cosa
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		std::cout<<'\n';
+
+		//Conta tSec secondi
 		for(int i=0;i<tSec;i++){
-			if(stop){
+			if(stop){//Smette di contare se stop=true (Classe distrutta)
 				break;
 			}
-			std::cout<<"\x1b[A \r    \r"<<tSec-i<<"\n";
+			std::cout<<"\x1b[A \r    \r"<<tSec-i<<"\n";//Stampa del tempo rimanente
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 		}
-		if(!stop){
+		if(!stop){//Stampa tempo scaduto solo se la classe è ancora in utilizzo
 			std::cout<<"Tempo scaduto\n";
 			this->timerExpired = true;
 		}
@@ -40,7 +43,8 @@ void Timer::stopTimer(){
 }
 
 Timer::~Timer() {
+	//Scollega il thread dal programma
 	thread.detach();
-	stop=true;
+	stop=true;//Dice al metodo run di non stampare più niente
 }
 

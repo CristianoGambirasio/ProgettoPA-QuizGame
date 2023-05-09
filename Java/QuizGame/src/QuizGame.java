@@ -14,20 +14,21 @@ import partite.SinglePlayer;
 import utils.ConsoleCleaner;
 
 public class QuizGame {
+	//Due diversi path in base a se l'esecuzione parte da ide o da terminale
 	public static String IDE_PATH = "..\\..\\Quiz\\";
 	public static String TERMINAL_PATH = "..\\..\\..\\Quiz\\";
 
 	public static void main(String[] args){
-		ConsoleCleaner.clear();
-		int scelta=0;
-		String quiz = null;
+		ConsoleCleaner.clear();//Pulisce la console (solo su terminale)
+		int scelta=0; //Comanda il flusso del software
+		String quiz = null; //path del quiz selezionato
 		
 		Scanner in = new Scanner(System.in);
 		
-		Partita partita = null;
-		Report risultato;
+		Partita partita = null; //Partita da avviare
+		Report risultato; //Report della partita 
 		
-		String quizDirPath;
+		String quizDirPath;//Determinazione di quale path di base usare
 		if(Paths.get("").toAbsolutePath().getFileName().toString().equals("src")){
 			quizDirPath = TERMINAL_PATH;
 		}else {
@@ -35,6 +36,7 @@ public class QuizGame {
 		}
 		
 		do {
+			//Inserimento modalità
 			scelta = safeInput("Seleziona una modalita':"
 					+ "\n1)Partita Singleplayer"
 					+ "\n2)Partita Multiplayer"
@@ -42,6 +44,7 @@ public class QuizGame {
 					+ "\nInserisci una risposta valida (1-2-0): ",
 					0, 2, in);
 			
+			//Calcolo della lista di quiz
 			ArrayList<String> quizList = new ArrayList<>();
 			
 			try (Stream<Path> paths = Files.walk(Paths.get(quizDirPath))) {
@@ -52,20 +55,21 @@ public class QuizGame {
 			} catch (IOException e) {
 				System.out.println(e);
 			}
-			
 			if(!quizList.isEmpty()) {
 				quizList.remove(0);
 			}
-			
 			in.nextLine();
 			
+			//Se scelta = 0 esco dall'esecuzione
 			if(scelta == 0) {
 				break;
 			}
 			
+			//Inserimento del quiz da fare
 			quiz = safeInput("Inserisci il nome del quiz che si vuole fare:"
 					+ "\nQuiz disponibili: ", quizList, quizDirPath, in);
-				
+			
+			//Esecuzione della modalità giusta
 			if(scelta==1) {
 				partita = new SinglePlayer(quiz);
 			}
@@ -77,6 +81,8 @@ public class QuizGame {
 			}
 			
 			risultato = partita.start(in);
+			
+			//Stampa del report
 			risultato.print();
 			
 			System.out.println("Premi invio per concludere la partita");
@@ -89,6 +95,8 @@ public class QuizGame {
 		in.close();
 	}
 
+	
+	//Definizione dei metodi per il safe input
 	private static String safeInput(String out, ArrayList<String> choices, String prefix, Scanner in) {
 		String res;
 		do {

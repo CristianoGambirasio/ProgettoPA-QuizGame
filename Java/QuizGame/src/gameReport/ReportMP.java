@@ -2,6 +2,7 @@ package gameReport;
 
 import java.util.ArrayList;
 
+//Report di una partita Multiplayer, si basa su un ArrayList di records
 public class ReportMP extends Report{
 	
 	ArrayList<ReportRecord> records;

@@ -20,6 +20,7 @@ public class MultiPlayer extends Partita {
 		this.nPlayers = nPlayers;
 	}
 
+	//Il metodo start esegue il quiz per ogni giocatore 
 	@Override
 	public Report start(Scanner in) {
 		QuestionReader qr = new QuestionReader(quizPath);
@@ -68,12 +69,15 @@ public class MultiPlayer extends Partita {
 			}
 		}
 		ReportMP report = new ReportMP();
+		//Aggiunge tutti i vari record alla lista
 		for(int i=0;i<nPlayers;i++) {
+			//Utilizza add report che crea un record
 			report.addReport(nRispGiuste[i], "[PLAYER "+(i+1)+"]" , reportStrings.get(i));
 		}
 		return report;
 	}
 
+	//Crea una stringa da inserire nel report
 	private String buildReportString(int nDomanda, String domanda, String rispostaData, String rispostaGiusta) {
 		String res = nDomanda + ") "+ domanda + " " + rispostaData + ". Risposta giusta: "+rispostaGiusta;
 		return res;

@@ -20,11 +20,14 @@ public class SinglePlayer extends Partita{
 	public ReportSP start(Scanner in) {
 		QuestionReader qr = new QuestionReader(quizPath);
 		
-		String[] reportStrings = new String[nDomande];
+		String[] reportStrings = new String[nDomande];//Array di stringhe che conterranno
+		//un output da stampare (domanda, risposta data, risposta giusta)
+		
 		String rispGiusta;
 		String domanda;
 		int nRispGiuste = 0;
 		
+		//Stampa e prende la risposta per ogni domanda
 		for(int i=0;i<nDomande;i++) {
 			ArrayList<String> q = qr.getDomanda(i+1);
 			rispGiusta = q.get(1);
@@ -51,14 +54,16 @@ public class SinglePlayer extends Partita{
 				ConsoleCleaner.clear();
 			}while(rispData<1 || rispData>4);
 			
-	
+			//Crea la stringa da mettere nel report finale
 			reportStrings[i] = buildReportString(i+1,domanda,q.get(rispData-1),rispGiusta);
 			
+			//Conta le risposte giuste
 			if(q.get(rispData-1).equals(rispGiusta)) {
 				nRispGiuste++;
 			}
 			
 		}
+		//Record che contiene i risultati del quiz
 		ReportSP report = new ReportSP(nRispGiuste, reportStrings);
 		return report;
 	}

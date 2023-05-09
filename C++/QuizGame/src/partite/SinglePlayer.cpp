@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 
-SinglePlayer::SinglePlayer(std::string path) {
+SinglePlayer::SinglePlayer(std::string path) { //Costruttore di base di tutte le partite
 	this->path = path;
 	ConfigReader cr(path);
 	this->nDomande = cr.getNDomande();
@@ -14,9 +14,10 @@ SinglePlayer::SinglePlayer(std::string path) {
 void SinglePlayer::start(){
 	int nRispGiuste = 0;
 
+	//Mostra nDomande domande
 	for(int i=0;i<nDomande;i++){
 		if(showDomanda(i)){
-			nRispGiuste+=1;
+			nRispGiuste+=1;//Conta delle risposte giuste
 		}
 	}
 	std::cin.ignore();
@@ -25,6 +26,8 @@ void SinglePlayer::start(){
 	system("CLS");
 }
 
+//Stampa la domanda e fa inserire una risposta, ritorna true se la risposta è giusta, false se la risposta è
+//sbagliata
 bool SinglePlayer::showDomanda(int i){
 
 	QuestionReader qr(path);
@@ -38,7 +41,7 @@ bool SinglePlayer::showDomanda(int i){
 	domanda = q[0];
 
 	q.erase(q.begin());
-	std::random_shuffle(q.begin(), q.end());
+	std::random_shuffle(q.begin(), q.end()); //Shuffle delle 4 domande
 
 	std::cout<<"Domanda "<<i+1<<")"<<domanda<<"\n"
 			"1) "<<q[0]<<"\t\t\t2) "<<q[1]<<"\n"
